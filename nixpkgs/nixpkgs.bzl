@@ -214,13 +214,10 @@ def _nixpkgs_package_impl(repository_ctx):
         "bazel-support/nix-out-link",
     ])
 
-    if repository_ctx.attr.expand_location:
-        expr_args.extend([
-            _expand_location(repository_ctx, opt, nix_file_deps, "nixopts")
-            for opt in repository_ctx.attr.nixopts
-        ])
-    else:
-        expr_args.extend(repository_ctx.attr.nixopts)
+    expr_args.extend([
+        _expand_location(repository_ctx, opt, nix_file_deps, "nixopts")
+        for opt in repository_ctx.attr.nixopts
+    ])
 
     for repo in repositories.keys():
         path = str(repository_ctx.path(repo).dirname) + "/nix-file-deps"
@@ -307,7 +304,6 @@ _nixpkgs_package = repository_rule(
         "build_file": attr.label(),
         "build_file_content": attr.string(),
         "nixopts": attr.string_list(),
-        "expand_location": attr.bool(default = False),
         "quiet": attr.bool(),
         "fail_not_supported": attr.bool(default = True, doc = """
             If set to True (default) this rule will fail on platforms which do not support Nix (e.g. Windows). If set to False calling this rule will succeed but no output will be generated.
@@ -653,7 +649,6 @@ def nixpkgs_cc_configure_hermetic(
         repositories = repositories,
         repository = repository,
         nixopts = nixopts,
-        expand_location = True,
         quiet = quiet,
         fail_not_supported = fail_not_supported,
     )

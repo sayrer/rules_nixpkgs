@@ -10,12 +10,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 
-- Add `expand_location` attribute to `nixpkgs_package`. When enabled instances
-  of `$(location LABEL)` in the `nixopts` attribute will be expanded to the
-  file path of the file referenced by `LABEL`.
-  See [#132][#132].
 - Define `nixpkgs_cc_configure_hermetic` in `//nixpkgs:repositories.bzl`.
   See [#128][#128].
+
+### Changed
+
+- The values in the `nixopts` attribute to `nixpkgs_package` are now subject to
+  location expansion. Any instance of `$(location LABEL)` in the `nixopts`
+  attribute will be expanded to the file path of the file referenced by
+  `LABEL`. To pass a plain `$` to Nix it must be escaped as `$$`.
+  See [#132][#132].
 
 ### Deprecated
 
